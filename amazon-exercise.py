@@ -62,6 +62,45 @@ def find_LCA(root, n1, n2):
         else:
             return None
 
+def count_edges(root, LCA, n1, n2):
+    if not root:
+        return None
+    # traverse tree to find LCA
+    level_LCA = traverse_tree(root, LCA.value)
+    print "LCA:", LCA.value
+    print "Level LCA", level_LCA
+    # traverse from root to find node1
+    level_n1 = traverse_tree(root, n1)
+    print "Level n1", level_n1
+    # traverse from root to find node2
+    level_n2 = traverse_tree(root, n2)
+    print "Level n2", level_n2
+    # number of edges = level_n1 + level_n2 - 2(level_LCA)
+    if LCA != root:
+        num_edges = level_n1 + level_n2 - 2 * level_LCA
+    else:
+        num_edges = level_n1 + level_n2
+    return num_edges
+
+
+def traverse_tree(root, node):
+    if not root:
+        return None
+    current = root
+    level = 0
+    while current:
+        if current.value == node:
+            return level
+        elif current.value < node and current.right:
+            level += 1
+            current = current.right
+        elif current.value > node and current.left:
+            level += 1
+            current = current.left
+        else:
+            return None
+    return None
+
 
 
 # the first node, n, we encounter with a value between n1 and n2 (n1 < n < n2)
@@ -85,12 +124,19 @@ if __name__ == "__main__":
     for i in range(1,len(node_values)):
         root.insert(node_values[i])
     print "Looking for LCA of 5 and 32"
-    result = find_LCA(root, 5, 32)
-    print "Result:", result
-    print "Result.value:", result.value
+    LCA = find_LCA(root, 5, 32)
+    print "Result:", LCA
+    print "Result.value:", LCA.value
     print "Looking for LCA of 5 and 80"
     result = find_LCA(root, 5, 80)
     print "Result:", result
     print "Result.value:", result.value
+
+    level_n1 = traverse_tree(root, 5)
+    level_LCA = traverse_tree(root, LCA.value)
+    num_edges = count_edges(root, LCA, 5, 32)
+    print "num_edges between 5 and 32", num_edges
+    num_edges = count_edges(root, LCA, 5, 60)
+    print "num_edges between 5 and 60", num_edges
 
                 
