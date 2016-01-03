@@ -46,18 +46,19 @@ def traverse(node):
 
 
 def find_LCA(root, n1, n2):
+    # import pdb; pdb.set_trace()
     if not root:
         return None
     if n1 <= root.value and root.value <= n2:
         return root
     elif n1 < root.value and n2 < root.value:
-        if root.right:
-            find_LCA(root.right)
+        if root.left:
+            return find_LCA(root.left, n1, n2)
         else:
             return None
     elif root.value < n1 and root.value < n2:
-        if root.left:
-            find_LCA(root.left, n1, n2)
+        if root.right:
+            return find_LCA(root.right, n1, n2)
         else:
             return None
 
@@ -78,14 +79,18 @@ if __name__ == "__main__":
     # node_2 = input()
     # num_nodes = input()
     # node_values = [int(i) for i in raw_input().strip().split()]
-    node_values = [50 25 75 10 30 60 80 5 26 32]
+    node_values = [50, 25, 75, 10, 30, 60, 80, 5, 26, 32]
     # create tree
     root = BSTNode(node_values[0])
-    for i in range(1:len(node_values)):
+    for i in range(1,len(node_values)):
         root.insert(node_values[i])
     print "Looking for LCA of 5 and 32"
     result = find_LCA(root, 5, 32)
+    print "Result:", result
+    print "Result.value:", result.value
     print "Looking for LCA of 5 and 80"
     result = find_LCA(root, 5, 80)
+    print "Result:", result
+    print "Result.value:", result.value
 
                 
